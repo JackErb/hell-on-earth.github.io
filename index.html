@@ -1,14 +1,627 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Website</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hell on Earth — A Point &amp; Click Cartoon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Mono:wght@400;700&family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:    #241233;
+    --sky:    #4FC3E8;
+    --sun:    #FFC93C;
+    --punch:  #FF5C77;
+    --paper:  #FFF6E0;
+    --swamp:  #2B6E5E;
+    --border-w: 4px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--sky);
+    color:var(--ink);
+    font-family:'Nunito', sans-serif;
+    overflow-x:hidden;
+  }
+
+  /* ---------- halftone texture ---------- */
+  .halftone{
+    background-image:radial-gradient(var(--ink) 1.4px, transparent 1.4px);
+    background-size:12px 12px;
+    opacity:0.14;
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+  }
+
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:0.78rem;
+  }
+
+  h1,h2,h3{
+    font-family:'Bungee', cursive;
+    margin:0;
+    line-height:1.05;
+  }
+
+  a{color:inherit;}
+
+  /* ---------- wobble border utility ---------- */
+  .comic-frame{
+    border:var(--border-w) solid var(--ink);
+    border-radius:26px 32px 22px 34px / 34px 22px 32px 26px;
+    box-shadow:8px 8px 0 var(--ink);
+    background:var(--paper);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:3.5rem 1.5rem 5rem;
+    max-width:1180px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+
+  .station-id{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    background:var(--ink);
+    color:var(--paper);
+    padding:0.4rem 0.9rem;
+    border-radius:999px;
+    margin-bottom:1.6rem;
+  }
+  .station-id .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--punch);
+    animation:blink 1.6s infinite steps(1);
+  }
+  @keyframes blink{ 50%{opacity:0.2;} }
+
+  .hero h1{
+    font-size:clamp(2.6rem, 7vw, 5.2rem);
+    color:var(--paper);
+    -webkit-text-stroke:3px var(--ink);
+    paint-order:stroke fill;
+    text-shadow:6px 6px 0 var(--punch);
+    letter-spacing:0.01em;
+  }
+
+  .hero .tagline{
+    margin-top:1.4rem;
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:clamp(0.9rem, 2vw, 1.15rem);
+    background:var(--paper);
+    border:3px solid var(--ink);
+    border-radius:10px;
+    padding:0.7rem 1.1rem;
+    max-width:34rem;
+    transform:rotate(-1.2deg);
+  }
+
+  .hero-signup{
+    background:var(--ink);
+    border-top:var(--border-w) solid var(--ink);
+    padding:1.4rem 1.5rem;
+  }
+  .hero-signup-label{
+    margin:0 0 1rem;
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:0.85rem;
+    color:var(--paper);
+    line-height:1.5;
+  }
+  .hero-signup .mc-form{margin-top:0;}
+  .hero-signup .form-msg{color:var(--paper);}
+  .hero-signup .form-msg.ok{color:var(--sun);}
+
+  /* Retro TV chassis behind the media block */
+  .tv-shell{
+    position:relative;
+    width:min(680px, 94vw);
+    padding:46px 50px 42px 28px;
+  }
+  .tv-shell-bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    overflow:visible;
+  }
+
+  /* Condensed header-image + signup block (sits "inside" the TV chassis) */
+  .hero-media{
+    position:relative;
+    z-index:1;
+    overflow:hidden;
+  }
+  .tv-screen{
+    aspect-ratio:16/10;
+    position:relative;
+    background:var(--swamp);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .tv-screen svg{position:relative;z-index:1;}
+  .tv-screen .knob{
+    position:absolute;
+    bottom:-2px; right:36px;
+    width:26px;height:26px;
+    border-radius:50%;
+    background:var(--sun);
+    border:3px solid var(--ink);
+  }
+  .tv-screen .label{
+    position:absolute;
+    top:14px; left:18px;
+    font-family:'Space Mono',monospace;
+    font-size:0.65rem;
+    color:var(--paper);
+    letter-spacing:0.1em;
+    opacity:0.75;
+    z-index:2;
+  }
+
+  .scroll-cue{
+    margin-top:2.6rem;
+    font-family:'Space Mono', monospace;
+    font-size:0.8rem;
+    font-weight:700;
+    color:var(--ink);
+    opacity:0.7;
+  }
+
+  /* ---------- SECTION WRAPPER ---------- */
+  section{
+    position:relative;
+    padding:4.5rem 1.5rem;
+  }
+  .section-inner{
+    max-width:1080px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+  }
+
+  .section-title{
+    font-size:clamp(1.8rem, 4.4vw, 2.6rem);
+    display:inline-block;
+    background:var(--sun);
+    border:3px solid var(--ink);
+    border-radius:10px;
+    padding:0.35rem 1rem;
+    transform:rotate(-1deg);
+    box-shadow:5px 5px 0 var(--ink);
+  }
+
+  /* ---------- SLIDESHOW (inside the TV) ---------- */
+  .slide{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transition:opacity 0.45s ease;
+  }
+  .slide.active{opacity:1; z-index:1;}
+  .slide svg{width:60%;height:60%;}
+  .slide .tag{
+    position:absolute;
+    bottom:12px; left:14px;
+    font-family:'Space Mono',monospace;
+    font-size:0.68rem;
+    color:var(--paper);
+    background:rgba(36,18,51,0.7);
+    padding:0.25rem 0.55rem;
+    border-radius:6px;
+  }
+
+  .tv-arrow{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:2;
+    width:38px;height:38px;
+    border-radius:50%;
+    border:3px solid var(--ink);
+    background:var(--paper);
+    font-size:1rem;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:3px 3px 0 var(--ink);
+    transition:transform 0.15s ease;
+    opacity:0.9;
+  }
+  .tv-arrow:hover{opacity:1;}
+  .tv-arrow-prev{left:12px;}
+  .tv-arrow-next{right:12px;}
+  .tv-arrow:active{transform:translateY(-50%) scale(0.92);}
+  .tv-arrow:focus-visible{outline:3px solid var(--punch); outline-offset:2px;}
+
+  .thumb-row{
+    display:flex;
+    gap:0.6rem;
+    padding:0.9rem 1rem;
+    background:var(--swamp);
+    border-top:var(--border-w) solid var(--ink);
+    overflow-x:auto;
+  }
+  .thumb{
+    flex:0 0 auto;
+    width:64px;
+    aspect-ratio:16/10;
+    border-radius:8px;
+    border:2.5px solid var(--paper);
+    padding:0;
+    cursor:pointer;
+    overflow:hidden;
+    opacity:0.65;
+    transition:opacity 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    background:#1c2f3a;
+  }
+  .thumb svg{width:100%;height:100%;display:block;}
+  .thumb:hover{opacity:0.9; transform:translateY(-2px);}
+  .thumb.active{opacity:1; border-color:var(--sun);}
+  .thumb:focus-visible{outline:3px solid var(--sun); outline-offset:2px;}
+
+  /* ---------- BLURB ---------- */
+  .blurb-section{background:var(--paper); border-top:var(--border-w) solid var(--ink); border-bottom:var(--border-w) solid var(--ink);}
+  .blurb-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:2rem;
+    align-items:start;
+  }
+  .blurb-text p{
+    font-size:1.08rem;
+    line-height:1.65;
+    margin:0 0 1rem;
+  }
+  .blurb-text p:last-child{margin-bottom:0;}
+
+  /* ---------- shared signup form styling ---------- */
+
+  .mc-form{
+    margin-top:1.8rem;
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.8rem;
+    justify-content:center;
+  }
+  .mc-form input[type=email]{
+    font-family:'Nunito', sans-serif;
+    font-weight:700;
+    font-size:1rem;
+    padding:0.85rem 1.1rem;
+    border-radius:10px;
+    border:3px solid var(--ink);
+    min-width:260px;
+    flex:1 1 260px;
+    max-width:340px;
+  }
+  .mc-form input[type=email]:focus-visible{outline:3px solid var(--sun); outline-offset:2px;}
+
+  .join-btn{
+    font-family:'Bungee', cursive;
+    font-size:0.95rem;
+    color:var(--ink);
+    background:var(--sun);
+    border:3px solid var(--ink);
+    border-radius:10px;
+    padding:0.85rem 1.6rem;
+    cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink);
+    transition:transform 0.15s ease;
+  }
+  .join-btn:hover{transform:translate(-2px,-2px);}
+  .join-btn:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink);}
+  .join-btn:focus-visible{outline:3px solid var(--paper); outline-offset:3px;}
+  .join-btn:disabled{opacity:0.6; cursor:progress;}
+
+  .form-msg{
+    margin-top:1rem;
+    font-family:'Space Mono', monospace;
+    font-size:0.82rem;
+    min-height:1.2em;
+  }
+  .form-msg.ok{color:var(--sun);}
+  .form-msg.err{color:#FFD1D9;}
+
+  /* honeypot - keep off-screen but not display:none (bots check for that) */
+  .hp-field{position:absolute; left:-9999px; top:-9999px;}
+
+  /* ---------- FOOTER TICKER ---------- */
+  footer{
+    background:var(--swamp);
+    color:var(--paper);
+    padding:1rem 0;
+    overflow:hidden;
+    border-top:var(--border-w) solid var(--ink);
+  }
+  .ticker{
+    display:flex;
+    white-space:nowrap;
+    font-family:'Space Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    animation:scroll-left 22s linear infinite;
+  }
+  .ticker span{padding-right:2.5rem;}
+  @keyframes scroll-left{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .ticker{animation:none;}
+    .station-id .dot{animation:none;}
+    .arrow-btn,.join-btn{transition:none;}
+  }
+
+  @media (min-width:760px){
+    .blurb-grid{grid-template-columns:1.1fr 0.9fr;}
+  }
+</style>
 </head>
 <body>
 
-    <h1>Welcome to My Website</h1>
-    <p>This is a simple paragraph of text on your new homepage.</p>
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <h1>HELL ON EARTH</h1>
+  <p class="tagline">A point-and-click cartoon about bad decisions at 3 A.M.</p>
+
+  <div class="tv-shell">
+
+    <div class="hero-media comic-frame">
+    <div class="tv-screen" id="slideshow">
+      <!-- Slide 0 — this is the header image -->
+      <div class="slide active" data-index="0">
+        <span class="label">HEADER IMAGE</span>
+        <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="130" rx="70" ry="10" fill="#000" opacity="0.2"/>
+          <path d="M60 100 Q40 60 70 40 Q90 20 120 35 Q150 45 145 80 Q160 95 140 115 Q120 135 90 125 Q60 120 60 100 Z" fill="#FFC93C" stroke="#241233" stroke-width="4"/>
+          <circle cx="88" cy="72" r="9" fill="#241233"/>
+          <circle cx="122" cy="70" r="9" fill="#241233"/>
+          <circle cx="90" cy="70" r="3" fill="#FFF6E0"/>
+          <circle cx="124" cy="68" r="3" fill="#FFF6E0"/>
+          <path d="M85 95 Q103 108 122 92" stroke="#241233" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M55 55 Q35 35 45 15" stroke="#241233" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M140 45 Q160 30 155 8" stroke="#241233" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="knob"></div>
+      </div>
+
+      <!-- Slide 1 -->
+      <div class="slide" data-index="1">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="180" fill="#3A7D6E"/>
+          <rect x="20" y="120" width="260" height="40" fill="#1B4B43"/>
+          <circle cx="230" cy="45" r="22" fill="#FFC93C" stroke="#241233" stroke-width="3"/>
+          <rect x="60" y="80" width="60" height="70" rx="8" fill="#FF5C77" stroke="#241233" stroke-width="3"/>
+          <rect x="150" y="60" width="40" height="90" rx="6" fill="#FFF6E0" stroke="#241233" stroke-width="3"/>
+        </svg>
+        <span class="tag">screenshot_01.png</span>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slide" data-index="2">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="180" fill="#4FC3E8"/>
+          <path d="M0 140 Q75 110 150 140 T300 140 V180 H0 Z" fill="#1B4B43"/>
+          <ellipse cx="90" cy="100" rx="26" ry="30" fill="#FFC93C" stroke="#241233" stroke-width="3"/>
+          <rect x="180" y="70" width="70" height="60" rx="10" fill="#FF5C77" stroke="#241233" stroke-width="3"/>
+        </svg>
+        <span class="tag">screenshot_02.png</span>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="slide" data-index="3">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="180" fill="#241233"/>
+          <circle cx="150" cy="90" r="55" fill="#FFC93C" opacity="0.9"/>
+          <rect x="40" y="130" width="220" height="30" fill="#2B6E5E"/>
+          <circle cx="150" cy="90" r="14" fill="#241233"/>
+        </svg>
+        <span class="tag">screenshot_03.png</span>
+      </div>
+
+      <button class="tv-arrow tv-arrow-prev" id="prevBtn" aria-label="Previous image">←</button>
+      <button class="tv-arrow tv-arrow-next" id="nextBtn" aria-label="Next image">→</button>
+    </div>
+
+    <div class="thumb-row" id="thumbRow" role="tablist" aria-label="Image previews"></div>
+
+    <div class="hero-signup">
+      <p class="hero-signup-label">We're seeking curious playtesters — join the mailing list to get access.</p>
+      <form class="mc-form" data-mc-form novalidate>
+        <input
+          type="email"
+          name="EMAIL"
+          class="mc-email"
+          placeholder="you@email.com"
+          required
+          aria-label="Email address"
+        >
+        <!-- Honeypot field — Mailchimp anti-bot convention: name is b_{u}_{id} -->
+        <div class="hp-field" aria-hidden="true">
+          <input type="text" name="b_REPLACE_U_REPLACE_ID" tabindex="-1" value="">
+        </div>
+        <button type="submit" class="join-btn mc-submit">Join mailing list</button>
+      </form>
+      <p class="form-msg" data-mc-msg role="status" aria-live="polite"></p>
+    </div>
+  </div>
+  </div>
+
+  <p class="scroll-cue">↓ keep scrolling, it gets weirder ↓</p>
+</div>
+
+<!-- ============ BLURB / ABOUT ============ -->
+<section class="blurb-section">
+  <div class="section-inner blurb-grid">
+    <div class="blurb-text">
+      <span class="section-title" style="background:var(--sky);">The Pitch</span>
+      <p style="margin-top:1.6rem;">You wake up on a beach you don't remember reaching, next to a raccoon who insists he's your parole officer. <em>Hell on Earth</em> is a classic point-and-click adventure built in the spirit of the cartoons that used to air when everyone sane was asleep — dumb logic puzzles, dumber dialogue, and a cast of background characters who'd each deserve their own show.</p>
+      <p>No combat, no fail states, just clicking things you shouldn't and seeing what happens. Built for anyone who grew up rewatching the same six late-night reruns until they knew every line.</p>
+    </div>
+    <div class="blurb-text">
+      <span class="section-title" style="background:var(--sun);">Status</span>
+      <p style="margin-top:1.6rem;">Currently in production. First playable chapter targeted for release once the raccoon's voice lines stop making the writers laugh mid-recording.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Hidden iframe target so the Mailchimp POST doesn't navigate the page -->
+<iframe name="hidden_mc_iframe" id="hidden_mc_iframe" style="display:none;" title="mailing list submission"></iframe>
+
+<footer>
+  <div class="ticker" id="ticker">
+    <span>HELL ON EARTH — LOOKING FOR PLAYTESTERS</span>
+    <span>NO COMBAT, JUST CONSEQUENCES</span>
+    <span>THE RACCOON IS NOT YOUR PAROLE OFFICER</span>
+    <span>HELL ON EARTH — LOOKING FOR PLAYTESTERS</span>
+    <span>NO COMBAT, JUST CONSEQUENCES</span>
+    <span>THE RACCOON IS NOT YOUR PAROLE OFFICER</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------------- Slideshow ---------------- */
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const thumbRow = document.getElementById('thumbRow');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  let current = 0;
+
+  // Build one thumbnail preview per slide (including the header image)
+  // so people can jump straight to any image.
+  slides.forEach((slide, i) => {
+    const thumb = document.createElement('button');
+    thumb.className = 'thumb';
+    thumb.type = 'button';
+    thumb.setAttribute('role', 'tab');
+    thumb.setAttribute('aria-label', i === 0 ? 'Show header image' : 'Show screenshot ' + i);
+    if (i === 0) thumb.classList.add('active');
+    const svgClone = slide.querySelector('svg').cloneNode(true);
+    thumb.appendChild(svgClone);
+    thumb.addEventListener('click', () => goTo(i));
+    thumbRow.appendChild(thumb);
+  });
+  const thumbs = Array.from(thumbRow.children);
+
+  function goTo(index){
+    slides[current].classList.remove('active');
+    thumbs[current].classList.remove('active');
+    current = (index + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    thumbs[current].classList.add('active');
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  /* ---------------- Mailchimp signup ----------------
+     HOW TO WIRE THIS UP TO YOUR OWN MAILCHIMP AUDIENCE:
+
+     1. In Mailchimp: Audience > Signup forms > Embedded forms.
+     2. Copy the form's "action" URL. It looks like:
+          https://yoursubdomain.usXX.list-manage.com/subscribe/post?u=XXXXXXXXXXXXXXXXXXXXXXXXX&id=YYYYYYYYYY
+     3. Set MC_FORM_ACTION below to that exact URL.
+     4. Find the honeypot field name Mailchimp expects: it's
+        "b_<u>_<id>" using the same u and id values from the action
+        URL. Update the name attribute on BOTH honeypot inputs in the
+        HTML (currently "b_REPLACE_U_REPLACE_ID") to match — e.g.
+        "b_abc123_45678". Leave the field itself blank; it's a spam
+        trap, not a real field.
+     5. That's it — no API key belongs in client-side code. Mailchimp's
+        embedded-form endpoint is designed to be called from the
+        browser like this. There are two forms on this page (top of
+        hero + bottom signup section) — both post to the same list,
+        this script wires up every form on the page automatically.
+  ------------------------------------------------------ */
+
+  const MC_FORM_ACTION = "https://YOURSUBDOMAIN.usXX.list-manage.com/subscribe/post?u=REPLACE_U&id=REPLACE_ID";
+
+  function isValidEmail(value){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  document.querySelectorAll('[data-mc-form]').forEach(function(form){
+    const emailInput = form.querySelector('.mc-email');
+    const submitBtn = form.querySelector('.mc-submit');
+    const msg = form.parentElement.querySelector('[data-mc-msg]');
+
+    function setMsg(text, kind){
+      msg.textContent = text;
+      msg.className = 'form-msg' + (kind ? ' ' + kind : '');
+    }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const email = emailInput.value.trim();
+      if (!isValidEmail(email)){
+        setMsg('That email doesn\u2019t look right — double check it.', 'err');
+        emailInput.focus();
+        return;
+      }
+
+      if (MC_FORM_ACTION.includes('REPLACE_U')){
+        setMsg('Signup form isn\u2019t connected yet — add your Mailchimp action URL in the script.', 'err');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      setMsg('Sending\u2026', '');
+
+      // Mailchimp's embedded endpoint can't be read via fetch() due to
+      // CORS, so we submit the real form to a hidden iframe. Mailchimp
+      // will process the subscription server-side regardless of what
+      // the (blocked) response looks like to us.
+      const iframe = document.getElementById('hidden_mc_iframe');
+      let settled = false;
+
+      function finish(){
+        if (settled) return;
+        settled = true;
+        submitBtn.disabled = false;
+        setMsg('You\u2019re on the list. Watch your inbox for playtest access.', 'ok');
+        form.reset();
+      }
+
+      iframe.addEventListener('load', finish, { once: true });
+      // Fallback in case the iframe load event doesn't fire in time.
+      setTimeout(finish, 4000);
+
+      form.action = MC_FORM_ACTION;
+      form.method = 'POST';
+      form.target = 'hidden_mc_iframe';
+      form.submit();
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
