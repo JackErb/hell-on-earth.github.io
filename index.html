@@ -109,7 +109,7 @@
     background:var(--paper);
     border:3px solid var(--ink);
     border-radius:10px;
-    padding:0.35rem 5.5rem;
+    padding:0.35rem 1.5rem;
     max-width:34rem;
     transform:rotate(-1.2deg);
   }
@@ -130,6 +130,16 @@
   .hero-signup .mc-form{margin-top:0;}
   .hero-signup .form-msg{color:var(--paper);}
   .hero-signup .form-msg.ok{color:var(--sun);}
+
+  .logo{
+	height: 100%;
+	width: 100%;
+	max-width: 800px;
+	margin-bottom: .5rem;
+	
+	object-fit: cover; /* Fills container, maintains ratio, crops edges */
+
+  }
 
   /* Retro TV chassis behind the media block */
   .tv-shell{
@@ -172,7 +182,7 @@
     position:absolute;
     top:14px; left:18px;
     font-family:'Space Mono',monospace;
-    font-size:0.65rem;
+    font-size:0.8rem;
     color:var(--paper);
     letter-spacing:0.1em;
     opacity:0.75;
@@ -221,6 +231,13 @@
     opacity:0;
     transition:opacity 0.45s ease;
   }
+  
+  .slide img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover; /* Fills container, maintains ratio, crops edges */
+  }
+  
   .slide.active{opacity:1; z-index:1;}
   .slide svg{width:60%;height:60%;}
   .slide .tag{
@@ -259,7 +276,7 @@
   .thumb-row{
     display:flex;
     gap:0.6rem;
-    padding:0.9rem 1rem;
+    padding:0.5rem 0.5rem;
     background:var(--swamp);
     border-top:var(--border-w) solid var(--ink);
     overflow-x:auto;
@@ -277,7 +294,7 @@
     transition:opacity 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
     background:#1c2f3a;
   }
-  .thumb svg{width:100%;height:100%;display:block;}
+  .thumb img{width:100%;height:100%;display:block;}
   .thumb:hover{opacity:0.9; transform:translateY(-2px);}
   .thumb.active{opacity:1; border-color:var(--sun);}
   .thumb:focus-visible{outline:3px solid var(--sun); outline-offset:2px;}
@@ -386,8 +403,8 @@
 
 <!-- ============ HERO ============ -->
 <div class="hero">
-  <h1>HELL ON EARTH</h1>
-  <p class="tagline">A point-and-click adventure in the style of 2000s cartoons.</p>
+  <img class="logo" src="Hell_On_Earth_Logo.png"/>
+  <p class="tagline">A point-and-click adventure in the style of early 2000s cartoons.</p>
 
   <div class="tv-shell">
 
@@ -395,63 +412,36 @@
     <div class="tv-screen" id="slideshow">
       <!-- Slide 0 — this is the header image -->
       <div class="slide active" data-index="0">
-        <span class="label">HEADER IMAGE</span>
-        <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="100" cy="130" rx="70" ry="10" fill="#000" opacity="0.2"/>
-          <path d="M60 100 Q40 60 70 40 Q90 20 120 35 Q150 45 145 80 Q160 95 140 115 Q120 135 90 125 Q60 120 60 100 Z" fill="#FFC93C" stroke="#241233" stroke-width="4"/>
-          <circle cx="88" cy="72" r="9" fill="#241233"/>
-          <circle cx="122" cy="70" r="9" fill="#241233"/>
-          <circle cx="90" cy="70" r="3" fill="#FFF6E0"/>
-          <circle cx="124" cy="68" r="3" fill="#FFF6E0"/>
-          <path d="M85 95 Q103 108 122 92" stroke="#241233" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <path d="M55 55 Q35 35 45 15" stroke="#241233" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <path d="M140 45 Q160 30 155 8" stroke="#241233" stroke-width="4" fill="none" stroke-linecap="round"/>
-        </svg>
-        <div class="knob"></div>
+        <span class="label">SATAN'S OFFICE</span>
+        <img class="slide-img" src="Satan_Office.png"/>
+      </div>
+
+	  <!-- Slide 2 -->
+      <div class="slide" data-index="2">
+	    <span class="label">OUR CAST</span>
+        <img src="Characters_Full.png"/>
       </div>
 
       <!-- Slide 1 -->
       <div class="slide" data-index="1">
-        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
-          <rect width="300" height="180" fill="#3A7D6E"/>
-          <rect x="20" y="120" width="260" height="40" fill="#1B4B43"/>
-          <circle cx="230" cy="45" r="22" fill="#FFC93C" stroke="#241233" stroke-width="3"/>
-          <rect x="60" y="80" width="60" height="70" rx="8" fill="#FF5C77" stroke="#241233" stroke-width="3"/>
-          <rect x="150" y="60" width="40" height="90" rx="6" fill="#FFF6E0" stroke="#241233" stroke-width="3"/>
-        </svg>
-        <span class="tag">screenshot_01.png</span>
-      </div>
-
-      <!-- Slide 2 -->
-      <div class="slide" data-index="2">
-        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
-          <rect width="300" height="180" fill="#4FC3E8"/>
-          <path d="M0 140 Q75 110 150 140 T300 140 V180 H0 Z" fill="#1B4B43"/>
-          <ellipse cx="90" cy="100" rx="26" ry="30" fill="#FFC93C" stroke="#241233" stroke-width="3"/>
-          <rect x="180" y="70" width="70" height="60" rx="10" fill="#FF5C77" stroke="#241233" stroke-width="3"/>
-        </svg>
-        <span class="tag">screenshot_02.png</span>
+	    <span class="label">THE SECRETARY</span>
+        <img class="slide-img" src="Altadonna_Talking.png"/>
       </div>
 
       <!-- Slide 3 -->
       <div class="slide" data-index="3">
-        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
-          <rect width="300" height="180" fill="#241233"/>
-          <circle cx="150" cy="90" r="55" fill="#FFC93C" opacity="0.9"/>
-          <rect x="40" y="130" width="220" height="30" fill="#2B6E5E"/>
-          <circle cx="150" cy="90" r="14" fill="#241233"/>
-        </svg>
-        <span class="tag">screenshot_03.png</span>
+	  	<span class="label">???</span>
+        <img class="slide-img" src="Altadonna_Heels.png"/>
       </div>
 
-      <button class="tv-arrow tv-arrow-prev" id="prevBtn" aria-label="Previous image">←</button>
-      <button class="tv-arrow tv-arrow-next" id="nextBtn" aria-label="Next image">→</button>
+      <button class="tv-arrow tv-arrow-prev" id="prevBtn" aria-label="Previous image"><</button>
+      <button class="tv-arrow tv-arrow-next" id="nextBtn" aria-label="Next image">></button>
     </div>
 
     <div class="thumb-row" id="thumbRow" role="tablist" aria-label="Image previews"></div>
 
     <div class="hero-signup">
-      <p class="hero-signup-label">We're seeking curious playtesters — join the mailing list to get access.</p>
+      <p class="hero-signup-label">Playtest our game! Join the mailing list to get access.</p>
       <form class="mc-form" data-mc-form novalidate>
         <input
           type="email"
@@ -471,24 +461,22 @@
     </div>
   </div>
   </div>
-
-  <p class="scroll-cue">↓ keep scrolling, it gets weirder ↓</p>
 </div>
 
 <!-- ============ BLURB / ABOUT ============ -->
-<section class="blurb-section">
+<!--<section class="blurb-section">
   <div class="section-inner blurb-grid">
-    <!--<div class="blurb-text">
+    <div class="blurb-text">
       <span class="section-title" style="background:var(--sky);">The Pitch</span>
       <p style="margin-top:1.6rem;">You wake up on a beach you don't remember reaching, next to a raccoon who insists he's your parole officer. <em>Hell on Earth</em> is a classic point-and-click adventure built in the spirit of the cartoons that used to air when everyone sane was asleep — dumb logic puzzles, dumber dialogue, and a cast of background characters who'd each deserve their own show.</p>
       <p>No combat, no fail states, just clicking things you shouldn't and seeing what happens. Built for anyone who grew up rewatching the same six late-night reruns until they knew every line.</p>
-    </div>-->
+    </div>
     <div class="blurb-text">
       <span class="section-title" style="background:var(--sun);">Status</span>
       <p style="margin-top:1.6rem;">Currently in production. We are conducting a closed playtest in late September. The first chapter to be finished by end of year.</p>
     </div>
   </div>
-</section>
+</section>-->
 
 <!-- Hidden iframe target so the Mailchimp POST doesn't navigate the page -->
 <iframe name="hidden_mc_iframe" id="hidden_mc_iframe" style="display:none;" title="mailing list submission"></iframe>
@@ -522,7 +510,7 @@
     thumb.setAttribute('role', 'tab');
     thumb.setAttribute('aria-label', i === 0 ? 'Show header image' : 'Show screenshot ' + i);
     if (i === 0) thumb.classList.add('active');
-    const svgClone = slide.querySelector('svg').cloneNode(true);
+    const svgClone = slide.querySelector('img').cloneNode(true);
     thumb.appendChild(svgClone);
     thumb.addEventListener('click', () => goTo(i));
     thumbRow.appendChild(thumb);
