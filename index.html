@@ -127,7 +127,7 @@
     color:var(--paper);
     line-height:1.5;
   }
-  .hero-signup .mc-form{margin-top:0;}
+  .hero-signup .ml-form{margin-top:0;}
   .hero-signup .form-msg{color:var(--paper);}
   .hero-signup .form-msg.ok{color:var(--sun);}
 
@@ -316,14 +316,14 @@
 
   /* ---------- shared signup form styling ---------- */
 
-  .mc-form{
+  .ml-form{
     margin-top:1.8rem;
     display:flex;
     flex-wrap:wrap;
     gap:0.8rem;
     justify-content:center;
   }
-  .mc-form input[type=email]{
+  .ml-form input[type=email]{
     font-family:'Nunito', sans-serif;
     font-weight:700;
     font-size:1rem;
@@ -334,7 +334,7 @@
     flex:1 1 260px;
     max-width:340px;
   }
-  .mc-form input[type=email]:focus-visible{outline:3px solid var(--sun); outline-offset:2px;}
+  .ml-form input[type=email]:focus-visible{outline:3px solid var(--sun); outline-offset:2px;}
 
   .join-btn{
     font-family:'Bungee', cursive;
@@ -361,9 +361,6 @@
   }
   .form-msg.ok{color:var(--sun);}
   .form-msg.err{color:#FFD1D9;}
-
-  /* honeypot - keep off-screen but not display:none (bots check for that) */
-  .hp-field{position:absolute; left:-9999px; top:-9999px;}
 
   /* ---------- FOOTER TICKER ---------- */
   footer{
@@ -398,6 +395,15 @@
     .blurb-grid{grid-template-columns:1.1fr 0.9fr;}
   }
 </style>
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2604574');
+</script>
+<!-- End MailerLite Universal -->
 </head>
 <body>
 
@@ -442,22 +448,20 @@
 
     <div class="hero-signup">
       <p class="hero-signup-label">Playtest our game! Join the mailing list to get access.</p>
-      <form class="mc-form" data-mc-form novalidate>
+      <form class="ml-form" data-ml-form novalidate>
         <input
           type="email"
-          name="EMAIL"
-          class="mc-email"
+          name="fields[email]"
+          class="ml-email"
           placeholder="you@email.com"
           required
           aria-label="Email address"
         >
-        <!-- Honeypot field — Mailchimp anti-bot convention: name is b_{u}_{id} -->
-        <div class="hp-field" aria-hidden="true">
-          <input type="text" name="b_REPLACE_U_REPLACE_ID" tabindex="-1" value="">
-        </div>
-        <button type="submit" class="join-btn mc-submit">Join mailing list</button>
+        <!-- If the HTML MailerLite gives you (Forms > Embedded forms > HTML code)
+             includes any extra hidden <input> fields, paste them here. -->
+        <button type="submit" class="join-btn ml-submit">Join mailing list</button>
       </form>
-      <p class="form-msg" data-mc-msg role="status" aria-live="polite"></p>
+      <p class="form-msg" data-ml-msg role="status" aria-live="polite"></p>
     </div>
   </div>
   </div>
@@ -478,8 +482,8 @@
   </div>
 </section>-->
 
-<!-- Hidden iframe target so the Mailchimp POST doesn't navigate the page -->
-<iframe name="hidden_mc_iframe" id="hidden_mc_iframe" style="display:none;" title="mailing list submission"></iframe>
+<!-- Hidden iframe target so the MailerLite POST doesn't navigate the page -->
+<iframe name="hidden_ml_iframe" id="hidden_ml_iframe" style="display:none;" title="mailing list submission"></iframe>
 
 <!--<footer>
   <div class="ticker" id="ticker">
@@ -528,36 +532,39 @@
   prevBtn.addEventListener('click', () => goTo(current - 1));
   nextBtn.addEventListener('click', () => goTo(current + 1));
 
-  /* ---------------- Mailchimp signup ----------------
-     HOW TO WIRE THIS UP TO YOUR OWN MAILCHIMP AUDIENCE:
+  /* ---------------- MailerLite signup ----------------
+     HOW TO WIRE THIS UP TO YOUR OWN MAILERLITE ACCOUNT:
 
-     1. In Mailchimp: Audience > Signup forms > Embedded forms.
-     2. Copy the form's "action" URL. It looks like:
-          https://yoursubdomain.usXX.list-manage.com/subscribe/post?u=XXXXXXXXXXXXXXXXXXXXXXXXX&id=YYYYYYYYYY
-     3. Set MC_FORM_ACTION below to that exact URL.
-     4. Find the honeypot field name Mailchimp expects: it's
-        "b_<u>_<id>" using the same u and id values from the action
-        URL. Update the name attribute on BOTH honeypot inputs in the
-        HTML (currently "b_REPLACE_U_REPLACE_ID") to match — e.g.
-        "b_abc123_45678". Leave the field itself blank; it's a spam
-        trap, not a real field.
-     5. That's it — no API key belongs in client-side code. Mailchimp's
-        embedded-form endpoint is designed to be called from the
-        browser like this. There are two forms on this page (top of
-        hero + bottom signup section) — both post to the same list,
-        this script wires up every form on the page automatically.
+     1. In MailerLite: Forms > Embedded forms > create (or open) a form,
+        assign it to the subscriber group you want new playtesters in.
+     2. On the form's editor, choose the "HTML code" embed option and
+        find the <form action="..."> URL. It looks like:
+          https://assets.mailerlite.com/jsonp/XXXXXX/forms/YYYYYYYYYYYYYYYYYY/subscribe
+        (the first number is your account ID, the second is the form ID).
+     3. Set ML_FORM_ACTION below to that exact URL.
+     4. Check that generated HTML for any extra hidden <input> fields
+        (MailerLite sometimes adds one for anti-spam / group targeting).
+        If there are any, copy them into the form in the HTML above, right
+        where the comment says to.
+     5. That's it — no API key belongs in client-side code. This endpoint
+        is MailerLite's public embedded-form submission URL, meant to be
+        posted to from the browser, same as the <form action> you'd get
+        from their own embed snippet. (This is different from MailerLite's
+        REST API, which uses a private Bearer-token API key — that key
+        must never be placed in client-side JS, since anyone could view
+        it in the page source and use it to access your whole account.)
   ------------------------------------------------------ */
 
-  const MC_FORM_ACTION = "https://YOURSUBDOMAIN.usXX.list-manage.com/subscribe/post?u=REPLACE_U&id=REPLACE_ID";
+  const ML_FORM_ACTION = "https://assets.mailerlite.com/jsonp/2604574/forms/197195424523617774/subscribe";
 
   function isValidEmail(value){
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  document.querySelectorAll('[data-mc-form]').forEach(function(form){
-    const emailInput = form.querySelector('.mc-email');
-    const submitBtn = form.querySelector('.mc-submit');
-    const msg = form.parentElement.querySelector('[data-mc-msg]');
+  document.querySelectorAll('[data-ml-form]').forEach(function(form){
+    const emailInput = form.querySelector('.ml-email');
+    const submitBtn = form.querySelector('.ml-submit');
+    const msg = form.parentElement.querySelector('[data-ml-msg]');
 
     function setMsg(text, kind){
       msg.textContent = text;
@@ -574,19 +581,14 @@
         return;
       }
 
-      if (MC_FORM_ACTION.includes('REPLACE_U')){
-        setMsg('Signup form isn\u2019t connected yet — add your Mailchimp action URL in the script.', 'err');
-        return;
-      }
-
       submitBtn.disabled = true;
       setMsg('Sending\u2026', '');
 
-      // Mailchimp's embedded endpoint can't be read via fetch() due to
-      // CORS, so we submit the real form to a hidden iframe. Mailchimp
-      // will process the subscription server-side regardless of what
-      // the (blocked) response looks like to us.
-      const iframe = document.getElementById('hidden_mc_iframe');
+      // MailerLite's embedded-form endpoint can't be read via fetch() due
+      // to CORS, so we submit the real form to a hidden iframe. MailerLite
+      // will process the subscription server-side regardless of what the
+      // (blocked) response looks like to us.
+      const iframe = document.getElementById('hidden_ml_iframe');
       let settled = false;
 
       function finish(){
@@ -601,9 +603,9 @@
       // Fallback in case the iframe load event doesn't fire in time.
       setTimeout(finish, 4000);
 
-      form.action = MC_FORM_ACTION;
+      form.action = ML_FORM_ACTION;
       form.method = 'POST';
-      form.target = 'hidden_mc_iframe';
+      form.target = 'hidden_ml_iframe';
       form.submit();
     });
   });
